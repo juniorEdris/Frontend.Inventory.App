@@ -15,7 +15,7 @@ const ItemCountCards = ({count=0, itemName="", route="/"}) => {
             <FaUserTie />
           </div>
         </div>
-        <div className="bg-primary hover:bg-primary-hover rounded-b-md text-light">
+        <div className="bg-primary hover:bg-primary-hover rounded-b-sm text-light">
           <Link to={route} className="flex items-center justify-center gap-2 py-1.5">
             See More{" "}
             <BsFillArrowRightCircleFill className="inline-block text-sm" />
