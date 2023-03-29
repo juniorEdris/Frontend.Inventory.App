@@ -4,6 +4,8 @@ import { AiFillDashboard } from "react-icons/ai";
 import ItemCountCards from "../../components/Cards/ItemCountCards";
 import { Link } from "react-router-dom";
 import reactIcon from "../../assets/react.svg";
+import InventoryBar from "../../components/AppCharts/InventoryBar";
+import SaleSummaryGraph from "../../components/AppCharts/SaleSummaryGraph";
 
 const Dashboard = () => {
   const [activeSidebar, setActiveSidebar] = useState(true);
@@ -18,25 +20,29 @@ const Dashboard = () => {
           className={`px-2 fixed top-0 ${activeSidebar ? "w-2/12" : "w-20"}`}
         >
           <div className="my-4 text-center">
-            <Link to={'/'} className="inline-block"><img src={reactIcon} alt="logo"/></Link>
+            <Link to={"/"} className="inline-block">
+              <img src={reactIcon} alt="logo" />
+            </Link>
           </div>
           <ul className={`grid text-lg capitalize`}>
-            {Array(5).fill().map((menu, i) => (
-              <li key={i} className="hover:bg-slate-600 py-2 px-1 rounded-md">
-                <Link to={""} className="block">
-                  <div
-                    className={`flex items-center gap-2 ${
-                      activeSidebar ? "" : "justify-center"
-                    }`}
-                  >
-                    <AiFillDashboard className="text-2xl" />
-                    <span className={`${activeSidebar ? "" : "hidden"}`}>
-                      page {i+1}
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            ))}
+            {Array(5)
+              .fill()
+              .map((menu, i) => (
+                <li key={i} className="hover:bg-slate-600 py-2 px-1 rounded-md">
+                  <Link to={""} className="block">
+                    <div
+                      className={`flex items-center gap-2 ${
+                        activeSidebar ? "" : "justify-center"
+                      }`}
+                    >
+                      <AiFillDashboard className="text-2xl" />
+                      <span className={`${activeSidebar ? "" : "hidden"}`}>
+                        page {i + 1}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
@@ -70,10 +76,10 @@ const Dashboard = () => {
           </div>
 
           <div className="py-4 grid grid-cols-2 gap-2">
-            <div className="border border-primary min-h-[350px] rounded-md"></div>
-            <div className="border border-primary min-h-[350px] rounded-md"></div>
-            <div className="border border-primary min-h-[350px] rounded-md"></div>
-            <div className="border border-primary min-h-[350px] rounded-md"></div>
+            <InventoryBar />
+            <SaleSummaryGraph />
+            {/* <div className="border border-primary min-h-[350px] rounded-md"></div>
+            <div className="border border-primary min-h-[350px] rounded-md"></div> */}
           </div>
         </div>
       </div>
