@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { Button, Input } from "../../components/Inputs";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/dashboard", { replace: true });
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-11/12 md:w-6/12 lg:w-4/12 mx-auto rounded-md shadow-lg bg-light">
-        <form className="px-5 py-3" onSubmit={() => {}}>
+        <form className="px-5 py-3" onSubmit={handleLogin}>
           <Input
             type="email"
             name="email"
@@ -36,7 +43,7 @@ const Login = () => {
           />
 
           <div className="my-2">
-            <Button customClasses="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-primary-hover focus:outline-none transition ease-in-out duration-150 ">
+            <Button customClasses="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-primary-hover focus:outline-none transition ease-in-out duration-150">
               Log in
             </Button>
           </div>
