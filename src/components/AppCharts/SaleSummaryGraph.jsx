@@ -67,7 +67,7 @@ const SaleSummaryGraph = () => {
 
   return (
     <div className={`border border-primary min-h-[350px] rounded-md p-4`}>
-      <ChartHeading>Total sales summary</ChartHeading>
+      <ChartHeading className="text-lg ">Total sales summary</ChartHeading>
 
       <div className={`py-3`}>
         <Line options={options} data={data} />

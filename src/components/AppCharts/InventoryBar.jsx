@@ -67,7 +67,7 @@ const InventoryBar = () => {
   return (
     <div className={`border border-primary min-h-[350px] rounded-md p-4`}>
 
-        <ChartHeading>Total Inventory Chart</ChartHeading>
+        <ChartHeading className="text-lg ">Total Inventory Chart</ChartHeading>
       <div className={`py-3`}>
         <Bar options={options} data={data} />
       </div>
