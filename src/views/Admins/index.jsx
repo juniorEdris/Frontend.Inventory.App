@@ -86,8 +86,8 @@ const Admins = () => {
                 <div className="">
                   <p className="text-lg">{adminDetails?.name}</p>
                   <div className="">
-                    {adminDetails?.roles?.map((role) => (
-                      <Chips title={role} />
+                    {adminDetails?.roles?.map((role,id) => (
+                      <Chips key={id} title={role} />
                     ))}
                   </div>
                 </div>
