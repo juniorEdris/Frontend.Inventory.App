@@ -1,5 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.min.css";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import SpinLoader from "./components/UI/SpinLoader";
