@@ -129,3 +129,12 @@ export const allInventories = [
     route: "/manage-products",
   },
 ];
+
+export const admins = [
+  {
+    id: 1,
+    name: "Neil Sims",
+    email: "neilsims@mail.com",
+    roles: ["admin", "super-admin"],
+  },
+];
