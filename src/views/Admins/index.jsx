@@ -5,7 +5,7 @@ import { PageHeadingWithAddButton } from "../../components/UI/PageHeadings";
 const Admins = () => {
   return (
     <div>
-        <PageHeadingWithAddButton title="Admin"/>
+        <PageHeadingWithAddButton title="Admins"/>
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const Input = ({
   parentClasses = "",
   placeHolder = "Please enter a value",
   label = "",
-  labelCustomClasses = "",
+  labelCustomClasses = "capitalize",
 }) => {
   return (
     <div className={parentClasses}>

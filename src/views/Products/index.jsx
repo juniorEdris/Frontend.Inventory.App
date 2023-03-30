@@ -4,6 +4,8 @@ import { PageHeadingWithAddButton } from "../../components/UI/PageHeadings";
 import { Input } from "../../components/Inputs";
 import CallBackModal from "../../components/UI/CallBackModal";
 import { products } from "../../utils/uiData";
+import ProductTable from "../../components/UI/ProductTable";
+import { toast } from "react-toastify";
 
 const Products = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -12,12 +14,27 @@ const Products = () => {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
 
+  const [product, setProduct] = useState({
+    name: "",
+    quantity: "",
+    stock: "",
+    price: "",
+  });
+
+  const [allProducts, setAllProducts] = useState(products);
+
   const closeAddModal = () => {
     setIsOpenAddModal(false);
   };
 
   const closeEditModal = () => {
     setIsOpenEditModal(false);
+    setProduct({
+      name: "",
+      quantity: "",
+      stock: "",
+      price: "",
+    });
   };
 
   const closeDeleteModal = () => {
@@ -26,18 +43,42 @@ const Products = () => {
 
   const closeDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    setProductDetails(null)
+    // setProductDetails(null)
   };
 
   const handleProductDetails = (product) => {
     setProductDetails(product);
-    setIsOpenDetailsModal(true)
+    setIsOpenDetailsModal(true);
+  };
+
+  const handleInputs = (e) => {
+    setProduct((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
+  const handleAddProd = () => {
+    if (
+      !!product?.name &&
+      !!product?.stock &&
+      !!product?.price &&
+      !!product?.quantity
+    ) {
+      setAllProducts((state) => [{ ...product }, ...state]);
+      setIsOpenAddModal(false);
+      setProduct({
+        name: "",
+        quantity: "",
+        stock: "",
+        price: "",
+      });
+    } else {
+      toast.error("Fill All the inputs!");
+    }
   };
 
   return (
     <div>
       <PageHeadingWithAddButton
-        title="Products"
+        title="products"
         handleAddBtn={() => setIsOpenAddModal(true)}
       />
 
@@ -46,81 +87,64 @@ const Products = () => {
       </div>
 
       <div className={``}>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Product name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Quantity
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Stock
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <span className="sr-only">Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {products?.map((product) => (
-                <tr
-                  key={product?.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <span
-                      className="cursor-pointer"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => handleProductDetails(product)}
-                    >
-                      {product?.name}
-                    </span>
-                  </th>
-                  <td className="px-6 py-4">{product?.quantity}</td>
-                  <td className="px-6 py-4">{product?.stock}</td>
-                  <td className="px-6 py-4">${product?.price}</td>
-                  <td className="px-6 py-4 text-right">
-                    <span
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setIsOpenEditModal(true)}
-                      className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </span>
-                    <span
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setIsOpenDeleteModal(true)}
-                      className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Delete
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ProductTable
+          products={allProducts}
+          handleProductDetails={handleProductDetails}
+          openEditModal={(product) => {
+            setProduct(product)
+            setIsOpenEditModal(true);
+          }}
+          openDeleteModal={() => setIsOpenDeleteModal(true)}
+        />
       </div>
+
       {/* Add products Call Back Dialog */}
       <CallBackModal
         isOpen={isOpenAddModal}
         closeModal={closeAddModal}
+        handleSubmit={handleAddProd}
         modalTitle={"Add Product"}
+        buttonTitle="Add product"
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <p className="text-sm text-gray-500">Callback Apears Here</p>
+        <div className="">
+          <div className="flex items-center gap-2">
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="name"
+              name="name"
+              handleInput={handleInputs}
+              value={product?.name}
+            />
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="quantity"
+              name="quantity"
+              handleInput={handleInputs}
+              value={product?.quantity}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="stock"
+              name="stock"
+              handleInput={handleInputs}
+              value={product?.stock}
+            />
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="price"
+              name="price"
+              handleInput={handleInputs}
+              value={product?.price}
+            />
+          </div>
+        </div>
       </CallBackModal>
       {/* Add products Call Back Dialog */}
 
@@ -131,7 +155,44 @@ const Products = () => {
         modalTitle={"Edit Product"}
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <p className="text-sm text-gray-500">Callback Apears Here</p>
+        <div className="">
+          <div className="flex items-center gap-2">
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="name"
+              name="name"
+              handleInput={handleInputs}
+              value={product?.name}
+            />
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="quantity"
+              name="quantity"
+              handleInput={handleInputs}
+              value={product?.quantity}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="stock"
+              name="stock"
+              handleInput={handleInputs}
+              value={product?.stock}
+            />
+            <Input
+              customClasses=""
+              placeHolder=""
+              label="price"
+              name="price"
+              handleInput={handleInputs}
+              value={product?.price}
+            />
+          </div>
+        </div>
       </CallBackModal>
       {/* Edit product Call Back Dialog */}
 
@@ -140,7 +201,8 @@ const Products = () => {
         isOpen={isOpenDeleteModal}
         closeModal={closeDeleteModal}
         modalTitle={""}
-        btnClasses="inline-flex justify-center rounded-md border border-transparent bg-danger-400 px-4 py-2 text-sm font-medium text-light hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        buttonTitle={"Delete"}
+        btnClasses="inline-flex justify-center rounded-md border border-transparent text-gray-100 bg-red-600 px-4 py-2 text-sm font-medium text-light hover:bg-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
         <p className="text-sm text-gray-500">Delete Modal</p>
       </CallBackModal>
@@ -152,6 +214,7 @@ const Products = () => {
         closeModal={closeDetailsModal}
         modalTitle={"Product Details"}
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        fluid
       >
         <p className="text-sm text-gray-500">{productDetails?.name}</p>
       </CallBackModal>
