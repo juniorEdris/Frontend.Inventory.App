@@ -12,7 +12,6 @@ const Admins = () => {
   const [allAdmins, setAllAdmins] = useState(admins);
   const [searchedAdmins, setSearchedAdmins] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  console.log({ searchedAdmins });
   const [adminDetails, setAdminDetails] = useState(null);
   const [newAdmin, setNewAdmin] = useState({
     name: "",

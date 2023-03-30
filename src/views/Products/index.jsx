@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import withHeaderAndSidebar from "../../components/HOC/withHeaderAndSidebar";
 import { PageHeadingWithAddButton } from "../../components/UI/PageHeadings";
-import { Input } from "../../components/Inputs";
+import { Input, TextArea } from "../../components/Inputs";
 import CallBackModal from "../../components/UI/CallBackModal";
 import { products } from "../../utils/uiData";
 import ProductTable from "../../components/UI/ProductTable";
@@ -19,13 +19,22 @@ const Products = () => {
     quantity: "",
     stock: "",
     price: "",
+    desc:""
   });
   const [selectedProduct, setSelectedProduct] = useState(null);
-
   const [allProducts, setAllProducts] = useState(products);
+  const [searchedProducts, setSearchedProducts] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
   const closeAddModal = () => {
     setIsOpenAddModal(false);
+    setProduct({
+      name: "",
+      quantity: "",
+      stock: "",
+      price: "",
+      desc: "",
+    });
   };
 
   const closeEditModal = () => {
@@ -35,11 +44,13 @@ const Products = () => {
       quantity: "",
       stock: "",
       price: "",
+      desc: "",
     });
   };
 
   const closeDeleteModal = () => {
     setIsOpenDeleteModal(false);
+    setSelectedProduct(null);
   };
 
   const closeDetailsModal = () => {
@@ -67,37 +78,51 @@ const Products = () => {
         { id: Math.random() + products.length + 1, ...product },
         ...state,
       ]);
-      setIsOpenAddModal(false);
-      setProduct({
-        name: "",
-        quantity: "",
-        stock: "",
-        price: "",
-      });
+      closeAddModal();
     } else {
-      toast.error("Fill All the inputs!");
+      toast.error("Fill all required inputs!");
     }
   };
 
   const handleDelete = () => {
     const restProd = allProducts.filter((item) => item.id !== selectedProduct);
     setAllProducts(restProd);
-    setIsOpenDeleteModal(false);
+    closeDeleteModal();
   };
 
   const handleUpdate = () => {
-    const restProd = allProducts.map((item) => {
-      if (item?.id === selectedProduct) {
-        item.name = product?.name;
-        item.quantity = product?.quantity;
-        item.price = product?.price;
-        item.stock = product?.stock;
-      }
-      return item;
-    });
+    if (
+      !!product?.name &&
+      !!product?.stock &&
+      !!product?.price &&
+      !!product?.quantity
+    ) {
+      const restProd = allProducts.map((item) => {
+        if (item?.id === selectedProduct) {
+          item.name = product?.name;
+          item.quantity = product?.quantity;
+          item.price = product?.price;
+          item.stock = product?.stock;
+          item.desc = product?.desc;
+        }
+        return item;
+      });
+      setAllProducts(restProd);
+      closeEditModal();
+    } else {
+      toast.error("Fill all required inputs!");
+    }
+  };
 
-    setAllProducts(restProd);
-    setIsOpenEditModal(false);
+  const handleSearch = (e) => {
+    setSearchInput(e.target.value);
+    setSearchedProducts(
+      allProducts.filter((product) =>
+        product.name
+          .toLocaleLowerCase()
+          .includes(e.target.value.toLocaleLowerCase())
+      )
+    );
   };
 
   return (
@@ -108,23 +133,57 @@ const Products = () => {
       />
 
       <div className={`my-8`}>
-        <Input customClasses="" placeHolder="Type for a quick search" />
+        <Input
+          customClasses=""
+          placeHolder="Type for a quick search"
+          handleInput={handleSearch}
+          value={searchInput}
+        />
       </div>
 
       <div className={``}>
-        <ProductTable
-          products={allProducts}
-          handleProductDetails={handleProductDetails}
-          openEditModal={(product) => {
-            setProduct(product);
-            setIsOpenEditModal(true);
-            setSelectedProduct(product?.id);
-          }}
-          openDeleteModal={(product) => {
-            setSelectedProduct(product?.id);
-            setIsOpenDeleteModal(true);
-          }}
-        />
+        {(() => {
+          if (searchInput && searchedProducts?.length) {
+            return (
+              <ProductTable
+                products={searchedProducts}
+                handleProductDetails={handleProductDetails}
+                openEditModal={(product) => {
+                  setProduct(product);
+                  setIsOpenEditModal(true);
+                  setSelectedProduct(product?.id);
+                }}
+                openDeleteModal={(product) => {
+                  setSelectedProduct(product?.id);
+                  setIsOpenDeleteModal(true);
+                }}
+              />
+            );
+          }
+          if (!searchInput && allProducts?.length) {
+            return (
+              <ProductTable
+                products={allProducts}
+                handleProductDetails={handleProductDetails}
+                openEditModal={(product) => {
+                  setProduct(product);
+                  setIsOpenEditModal(true);
+                  setSelectedProduct(product?.id);
+                }}
+                openDeleteModal={(product) => {
+                  setSelectedProduct(product?.id);
+                  setIsOpenDeleteModal(true);
+                }}
+              />
+            );
+          }
+
+          return (
+            <div className="flex items-center justify-center font-medium text-primary">
+              No Items found!
+            </div>
+          );
+        })()}
       </div>
 
       {/* Add products Call Back Dialog */}
@@ -136,7 +195,7 @@ const Products = () => {
         buttonTitle="Add product"
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <div className="">
+        <div className="grid gap-1">
           <div className="flex items-center gap-2">
             <Input
               customClasses=""
@@ -145,6 +204,7 @@ const Products = () => {
               name="name"
               handleInput={handleInputs}
               value={product?.name}
+              required
             />
             <Input
               customClasses=""
@@ -153,8 +213,10 @@ const Products = () => {
               name="quantity"
               handleInput={handleInputs}
               value={product?.quantity}
+              required
             />
           </div>
+
           <div className="flex items-center gap-2">
             <Input
               customClasses=""
@@ -163,6 +225,7 @@ const Products = () => {
               name="stock"
               handleInput={handleInputs}
               value={product?.stock}
+              required
             />
             <Input
               customClasses=""
@@ -171,7 +234,12 @@ const Products = () => {
               name="price"
               handleInput={handleInputs}
               value={product?.price}
+              required
             />
+          </div>
+
+          <div>
+            <TextArea label="desc" name="desc" handleTextArea={handleInputs} value={product?.desc} />
           </div>
         </div>
       </CallBackModal>
@@ -185,7 +253,7 @@ const Products = () => {
         handleSubmit={(product) => handleUpdate(product)}
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <div className="">
+        <div className="grid gap-1">
           <div className="flex items-center gap-2">
             <Input
               customClasses=""
@@ -194,6 +262,7 @@ const Products = () => {
               name="name"
               handleInput={handleInputs}
               value={product?.name}
+              required
             />
             <Input
               customClasses=""
@@ -202,6 +271,7 @@ const Products = () => {
               name="quantity"
               handleInput={handleInputs}
               value={product?.quantity}
+              required
             />
           </div>
           <div className="flex items-center gap-2">
@@ -212,6 +282,7 @@ const Products = () => {
               name="stock"
               handleInput={handleInputs}
               value={product?.stock}
+              required
             />
             <Input
               customClasses=""
@@ -220,7 +291,18 @@ const Products = () => {
               name="price"
               handleInput={handleInputs}
               value={product?.price}
+              required
             />
+          </div>
+          <div>
+            <div>
+              <TextArea
+                label="desc"
+                name="desc"
+                handleTextArea={handleInputs}
+                value={product?.desc}
+              />
+            </div>
           </div>
         </div>
       </CallBackModal>
@@ -245,11 +327,22 @@ const Products = () => {
       <CallBackModal
         isOpen={isOpenDetailsModal}
         closeModal={closeDetailsModal}
+        handleSubmit={closeDetailsModal}
         modalTitle={"Product Details"}
+        buttonTitle="close"
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         fluid
       >
-        <p className="text-sm text-gray-500">{productDetails?.name}</p>
+        <div className="py-5 grid gap-2">
+          <h1 className="text-2xl font-semibold text-primary">
+            {productDetails?.name}
+          </h1>
+          <div className="flex items-center gap-3">
+            <span>Qty: {productDetails?.quantity ?? 0}</span>
+            <span>Stock: {productDetails?.stock ?? 0}</span>
+          </div>
+          <p className="text-sm text-gray-500">{productDetails?.desc}</p>
+        </div>
       </CallBackModal>
       {/* product details Call Back Dialog */}
     </div>
