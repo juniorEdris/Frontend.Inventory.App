@@ -9,7 +9,7 @@ const AdminDetails = ({ admin = null, handleRemove = () => {} }) => {
         <FaUserCircle className="text-5xl" />
       </div>
       <div className="">
-        <h1 className="text-xl font-medium">{admin?.name}</h1>
+        <h1 className="text-xl font-medium capitalize">{admin?.name}</h1>
         <div className="my-1">
           {admin?.roles?.map((role, id) => (
             <Chips key={id} title={role} />

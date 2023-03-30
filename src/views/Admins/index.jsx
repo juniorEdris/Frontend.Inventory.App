@@ -12,7 +12,6 @@ const Admins = () => {
   const [allAdmins, setAllAdmins] = useState(admins);
   const [searchedAdmins, setSearchedAdmins] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  console.log({ searchedAdmins });
   const [adminDetails, setAdminDetails] = useState(null);
   const [newAdmin, setNewAdmin] = useState({
     name: "",
@@ -43,7 +42,7 @@ const Admins = () => {
       ]);
       closeAddModal();
     } else {
-      toast.error("Fill all the inputs!");
+      toast.error("Fill all required inputs!");
     }
   };
 
@@ -163,7 +162,7 @@ const Admins = () => {
         buttonTitle="Add Admin"
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <div className="">
+        <div className="grid gap-1">
           <div className=" py-1">
             <Input
               customClasses=""
@@ -172,6 +171,7 @@ const Admins = () => {
               name="name"
               handleInput={handleInputs}
               value={newAdmin?.name}
+              required
             />
           </div>
           <div className=" py-1">
@@ -182,6 +182,7 @@ const Admins = () => {
               name="email"
               handleInput={handleInputs}
               value={newAdmin?.email}
+              required
             />
           </div>
           <div className="relative w-full py-1">

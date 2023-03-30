@@ -11,6 +11,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 5,
@@ -47,6 +51,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 6,
@@ -56,6 +61,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 7,
@@ -65,6 +71,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 8,
@@ -74,6 +81,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
   {
     id: 9,
@@ -83,6 +91,7 @@ export const products = [
     soldAt: "2022-08-08T15:59:31+06:00",
     stock: 12,
     price: 150,
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, architecto magnam, corrupti consectetur cupiditate tenetur recusandae, quam laborum blanditiis exercitationem vel ipsa aperiam harum a reiciendis voluptatibus vero sequi. Sed necessitatibus ipsa accusantium, eum magni doloremque maxime dicta. Quia excepturi aspernatur iusto ut laudantium sit in eaque sed, officia ipsa?",
   },
 ];
 
