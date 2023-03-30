@@ -63,7 +63,10 @@ const Products = () => {
       !!product?.price &&
       !!product?.quantity
     ) {
-      setAllProducts((state) => [{ ...product }, ...state]);
+      setAllProducts((state) => [
+        { id: Math.random() + products.length + 1, ...product },
+        ...state,
+      ]);
       setIsOpenAddModal(false);
       setProduct({
         name: "",
