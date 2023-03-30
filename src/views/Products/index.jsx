@@ -20,6 +20,7 @@ const Products = () => {
     stock: "",
     price: "",
   });
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [allProducts, setAllProducts] = useState(products);
 
@@ -75,6 +76,27 @@ const Products = () => {
     }
   };
 
+  const handleDelete = () => {
+    const restProd = allProducts.filter((item) => item.id !== selectedProduct);
+    setAllProducts(restProd);
+    setIsOpenDeleteModal(false);
+  };
+
+  const handleUpdate = () => {
+    const restProd = allProducts.map((item) => {
+      if (item?.id === selectedProduct) {
+        item.name = product?.name;
+        item.quantity = product?.quantity;
+        item.price = product?.price;
+        item.stock = product?.stock;
+      }
+      return item;
+    });
+
+    setAllProducts(restProd);
+    setIsOpenEditModal(false);
+  };
+
   return (
     <div>
       <PageHeadingWithAddButton
@@ -91,10 +113,14 @@ const Products = () => {
           products={allProducts}
           handleProductDetails={handleProductDetails}
           openEditModal={(product) => {
-            setProduct(product)
+            setProduct(product);
             setIsOpenEditModal(true);
+            setSelectedProduct(product?.id);
           }}
-          openDeleteModal={() => setIsOpenDeleteModal(true)}
+          openDeleteModal={(product) => {
+            setSelectedProduct(product?.id);
+            setIsOpenDeleteModal(true);
+          }}
         />
       </div>
 
@@ -153,6 +179,7 @@ const Products = () => {
         isOpen={isOpenEditModal}
         closeModal={closeEditModal}
         modalTitle={"Edit Product"}
+        handleSubmit={(product) => handleUpdate(product)}
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
         <div className="">
@@ -200,11 +227,14 @@ const Products = () => {
       <CallBackModal
         isOpen={isOpenDeleteModal}
         closeModal={closeDeleteModal}
+        handleSubmit={handleDelete}
         modalTitle={""}
         buttonTitle={"Delete"}
         btnClasses="inline-flex justify-center rounded-md border border-transparent text-gray-100 bg-red-600 px-4 py-2 text-sm font-medium text-light hover:bg-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        <p className="text-sm text-gray-500">Delete Modal</p>
+        <h1 className="text-xl font-medium text-red-500">
+          Do you want to delete the product?
+        </h1>
       </CallBackModal>
       {/* Delete product Call Back Dialog */}
 
