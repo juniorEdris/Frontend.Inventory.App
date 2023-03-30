@@ -3,11 +3,14 @@ import withHeaderAndSidebar from "../../components/HOC/withHeaderAndSidebar";
 import { PageHeadingWithAddButton } from "../../components/UI/PageHeadings";
 import { Input } from "../../components/Inputs";
 import CallBackModal from "../../components/UI/CallBackModal";
+import { products } from "../../utils/uiData";
 
 const Products = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const [productDetails, setProductDetails] = useState(null);
 
   const closeAddModal = () => {
     setIsOpenAddModal(false);
@@ -19,6 +22,16 @@ const Products = () => {
 
   const closeDeleteModal = () => {
     setIsOpenDeleteModal(false);
+  };
+
+  const closeDetailsModal = () => {
+    setIsOpenDetailsModal(false);
+    setProductDetails(null)
+  };
+
+  const handleProductDetails = (product) => {
+    setProductDetails(product);
+    setIsOpenDetailsModal(true)
   };
 
   return (
@@ -41,10 +54,10 @@ const Products = () => {
                   Product name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Color
+                  Quantity
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Category
+                  Stock
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Price
@@ -55,35 +68,47 @@ const Products = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              {products?.map((product) => (
+                <tr
+                  key={product?.id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">Silver</td>
-                <td className="px-6 py-4">Laptop</td>
-                <td className="px-6 py-4">$2999</td>
-                <td className="px-6 py-4 text-right">
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setIsOpenEditModal(true)}
-                    className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Edit
-                  </span>
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setIsOpenDeleteModal(true)}
-                    className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Delete
-                  </span>
-                </td>
-              </tr>
+                    <span
+                      className="cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => handleProductDetails(product)}
+                    >
+                      {product?.name}
+                    </span>
+                  </th>
+                  <td className="px-6 py-4">{product?.quantity}</td>
+                  <td className="px-6 py-4">{product?.stock}</td>
+                  <td className="px-6 py-4">${product?.price}</td>
+                  <td className="px-6 py-4 text-right">
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setIsOpenEditModal(true)}
+                      className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </span>
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setIsOpenDeleteModal(true)}
+                      className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Delete
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -120,6 +145,17 @@ const Products = () => {
         <p className="text-sm text-gray-500">Delete Modal</p>
       </CallBackModal>
       {/* Delete product Call Back Dialog */}
+
+      {/* product details Call Back Dialog */}
+      <CallBackModal
+        isOpen={isOpenDetailsModal}
+        closeModal={closeDetailsModal}
+        modalTitle={"Product Details"}
+        btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+      >
+        <p className="text-sm text-gray-500">{productDetails?.name}</p>
+      </CallBackModal>
+      {/* product details Call Back Dialog */}
     </div>
   );
 };

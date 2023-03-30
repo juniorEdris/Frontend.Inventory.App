@@ -66,7 +66,7 @@ const withHeaderAndSidebar = (Component) => {
               <div className="">btns</div>
             </div>
             {/* </div> */}
-            <div className="p-4 min-h-screen">
+            <div className="px-4 py-12 min-h-screen">
               <Component {...props} />
             </div>
           </div>
