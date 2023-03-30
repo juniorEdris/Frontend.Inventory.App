@@ -10,6 +10,7 @@ const App = () => {
   const DashboardPage = lazy(() => import("./views/Dashboard"));
   const AdminPage = lazy(() => import("./views/Admins"));
   const ProductPage = lazy(() => import("./views/Products"));
+  const OrderPage = lazy(() => import("./views/Orders"));
 
   const Component = (Page) => (
     <Suspense fallback={<SpinLoader />}>
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/login" element={Component(LoginPage)} />
           <Route path="/manage-admins" element={Component(AdminPage)} />
           <Route path="/manage-products" element={Component(ProductPage)} />
+          <Route path="/manage-orders" element={Component(OrderPage)} />
           <Route
             path="*"
             element={
