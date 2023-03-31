@@ -6,6 +6,8 @@ import OrderTable from "../../components/UI/OrderTable";
 import { Input } from "../../components/Inputs";
 import CallBackModal from "../../components/UI/CallBackModal";
 import { toast } from "react-toastify";
+import { ImBin } from "react-icons/im";
+import { uuid } from "../../utils";
 
 const Order = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -26,13 +28,13 @@ const Order = () => {
 
   const closeEditModal = () => {
     setIsOpenEditModal(false);
-    // setOrder({
-    //   invoiceId: "",
-    //   orders: [],
-    //   deliverTo: "",
-    //   email: "",
-    //   total: "",
-    // });
+    setOrder({
+      invoiceId: "",
+      orders: [],
+      deliverTo: "",
+      email: "",
+      total: "",
+    });
   };
 
   const closeDeleteModal = () => {
@@ -51,20 +53,32 @@ const Order = () => {
     });
   };
 
+  const handleInputs = (e) => {
+    setOrder((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
   const handleAddOrder = () => {
-    if (
-      !!order.deliverTo &&
-      !!order.email &&
-      !!order.total 
-    ) {
-      setAllProducts((state) => [
-        { id: Math.random() + products.length + 1, ...product },
+    if (!!order.deliverTo && !!order.email && !!order.total) {
+      setAllOrders((state) => [
         ...state,
+        {
+          id: allOrders.length + 1,
+          idx: uuid(),
+          ...order,
+        },
       ]);
       closeAddModal();
     } else {
       toast.error("Fill all required inputs!");
     }
+  };
+
+  const handleOrderDelete = (id) => {
+    const restProd = order?.orders?.filter((item) => item.id !== id);
+    setOrder((state) => ({
+      ...state,
+      orders: restProd,
+    }));
   };
 
   const handleDelete = () => {
@@ -77,7 +91,7 @@ const Order = () => {
     setSearchInput(e.target.value);
     setSearchedOrders(
       allOrders.filter((order) =>
-        order.invoiceId
+        order.idx
           .toLocaleLowerCase()
           .includes(e.target.value.toLocaleLowerCase())
       )
@@ -165,68 +179,72 @@ const Order = () => {
         isOpen={isOpenEditModal}
         closeModal={closeEditModal}
         modalTitle={"Edit Order"}
+        buttonTitle="update"
         handleSubmit={(order) => handleUpdate(order)}
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
-        {/* <div className="grid gap-1">
+        <div className="grid gap-1">
           <div className="flex items-center gap-2">
             <Input
               customClasses=""
               placeHolder=""
-              label="name"
-              name="name"
+              label="email"
+              name="email"
               handleInput={handleInputs}
-              value={product?.name}
+              value={order?.email}
               required
             />
             <Input
               customClasses=""
               placeHolder=""
-              label="quantity"
-              name="quantity"
+              label="deliverTo"
+              name="deliverTo"
               handleInput={handleInputs}
-              value={product?.quantity}
+              value={order?.deliverTo}
               required
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="max-w-xs">
             <Input
               customClasses=""
               placeHolder=""
-              label="stock"
-              name="stock"
+              label="total price"
+              name="total"
               handleInput={handleInputs}
-              value={product?.stock}
-              required
-            />
-            <Input
-              customClasses=""
-              placeHolder=""
-              label="price"
-              name="price"
-              handleInput={handleInputs}
-              value={product?.price}
+              value={order?.total}
               required
             />
           </div>
           <div>
-            <div>
-              <TextArea
-                label="desc"
-                name="desc"
-                handleTextArea={handleInputs}
-                value={product?.desc}
-              />
+            <div className="max-w-xs grid gap-1 py-4">
+              <h1 className="text-lg font-medium">Orders:</h1>
+              <div className="">
+                <div className="flex items-center justify-between px-2">
+                  <p className="text-lg font-medium">Product name</p>
+                  <p className="text-lg font-medium">Qty</p>
+                  <p className="text-lg font-medium">Price</p>
+                </div>
+              </div>
+              {order?.orders.length ? order?.orders.map((order) => (
+                <div key={order?.id} className="">
+                  <div className="flex items-center justify-between border rounded-md px-2">
+                    <p className="text-lg">{order?.name}</p>
+                    <p className="text-lg">{order?.qty ?? 0}</p>
+                    <p className="text-lg">{order?.price ?? 0}</p>
+                    <span
+                      className=""
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => handleOrderDelete(order?.id)}
+                    >
+                      <ImBin className="inline-block text-lg text-red-500" />
+                    </span>
+                  </div>
+                </div>
+              )): (<p className="text-center">No items found</p>)}
             </div>
           </div>
-        </div> */}
-        {order?.email}
-        {order?.orders.map((order) => (
-          <p key={order?.id}>{order?.name}</p>
-        ))}
-        {order?.deliverTo}
-        {order?.email}
-        {order?.total}
+        </div>
       </CallBackModal>
       {/* Edit product Call Back Dialog */}
 
@@ -245,13 +263,13 @@ const Order = () => {
       </CallBackModal>
       {/* Delete product Call Back Dialog */}
 
-      {/* Add products Call Back Dialog */}
+      {/* Add order Call Back Dialog */}
       <CallBackModal
         isOpen={isOpenAddModal}
         closeModal={closeAddModal}
         handleSubmit={handleAddOrder}
-        modalTitle={"Add Product"}
-        buttonTitle="Add product"
+        modalTitle={"Add Order"}
+        buttonTitle="Add Order"
         btnClasses="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       >
         <div className="grid gap-1">
@@ -259,55 +277,36 @@ const Order = () => {
             <Input
               customClasses=""
               placeHolder=""
-              label="name"
-              name="name"
-              //   handleInput={handleInputs}
-              //   value={product?.name}
+              label="email"
+              name="email"
+              handleInput={handleInputs}
+              value={order?.email}
               required
             />
             <Input
               customClasses=""
               placeHolder=""
-              label="quantity"
-              name="quantity"
-              //   handleInput={handleInputs}
-              //   value={product?.quantity}
+              label="deliverTo"
+              name="deliverTo"
+              handleInput={handleInputs}
+              value={order?.deliverTo}
               required
             />
           </div>
-
-          <div className="flex items-center gap-2">
+          <div className="max-w-xs">
             <Input
               customClasses=""
               placeHolder=""
-              label="stock"
-              name="stock"
-              //   handleInput={handleInputs}
-              //   value={product?.stock}
-              required
-            />
-            <Input
-              customClasses=""
-              placeHolder=""
-              label="price"
-              name="price"
-              //   handleInput={handleInputs}
-              //   value={product?.price}
+              label="total price"
+              name="total"
+              handleInput={handleInputs}
+              value={order?.total}
               required
             />
           </div>
-
-          {/* <div>
-            <TextArea
-              label="desc"
-              name="desc"
-              handleTextArea={handleInputs}
-              value={product?.desc}
-            />
-          </div> */}
         </div>
       </CallBackModal>
-      {/* Add products Call Back Dialog */}
+      {/* Add order Call Back Dialog */}
     </div>
   );
 };

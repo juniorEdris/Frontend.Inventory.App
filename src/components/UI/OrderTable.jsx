@@ -40,7 +40,7 @@ const OrderTable = ({
               >
                 <span>{order?.id}</span>
               </th>
-              <td className="px-6 py-4">{order?.invoiceId}</td>
+              <td className="px-6 py-4">{order?.idx}</td>
               <td className="px-6 py-4">{order?.deliverTo}</td>
               <td className="px-6 py-4">${order?.total}</td>
               <td className="px-6 py-4 text-right">

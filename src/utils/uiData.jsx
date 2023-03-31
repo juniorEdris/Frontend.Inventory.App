@@ -1,7 +1,7 @@
 import { AiFillDashboard } from "react-icons/ai";
 import { BsCartDashFill, BsFillBagDashFill } from "react-icons/bs";
 import { FaUserTie } from "react-icons/fa";
-import { uuidv4 } from ".";
+import { uuid } from ".";
 
 export const products = [
   {
@@ -152,7 +152,7 @@ export const admins = [
 export const orders = [
   {
     id: 1,
-    invoiceId: uuidv4(),
+    idx: uuid(),
     orders: [
       {
         id: 1,
@@ -164,5 +164,20 @@ export const orders = [
     deliverTo: "John doe",
     email: "jhonedoe@mail.com",
     total: 50,
+  },
+  {
+    id: 2,
+    idx: uuid(),
+    orders: [
+      {
+        id: 1,
+        name: "products name2",
+        qty: 5,
+        price: 10,
+      },
+    ],
+    deliverTo: "Maria doe",
+    email: "mariadoe@mail.com",
+    total: 150,
   },
 ];
