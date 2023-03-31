@@ -1,12 +1,20 @@
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import reactIcon from "../../assets/react.svg";
 import { useState } from "react";
 import { pageRoutes } from "../../utils/uiData";
+import { Button } from "../Inputs/Button";
 
 const withHeaderAndSidebar = (Component) => {
   const NestedComponent = ({ ...props }) => {
+    const { pathname = "" } = useLocation();
+    const navigate = useNavigate();
     const [activeSidebar, setActiveSidebar] = useState(true);
+
+    const handleLogOut = () => {
+      localStorage.removeItem("accessToken");
+      navigate("/", { replace: true });
+    };
 
     return (
       <div className="">
@@ -26,11 +34,13 @@ const withHeaderAndSidebar = (Component) => {
                   <img src={reactIcon} alt="logo" />
                 </Link>
               </div>
-              <ul className={`grid text-lg capitalize`}>
+              <ul className={`grid gap-2 text-lg capitalize`}>
                 {pageRoutes.map((menu, i) => (
                   <li
                     key={i}
-                    className="hover:bg-slate-600 py-2 px-1 rounded-md"
+                    className={`${
+                      pathname.includes(menu?.route) ? "bg-slate-600" : ""
+                    } hover:bg-slate-600 py-2 px-1 rounded-md`}
                   >
                     <Link to={menu?.route} className="block">
                       <div
@@ -57,13 +67,15 @@ const withHeaderAndSidebar = (Component) => {
             {/* <div className="w-full fixed top-0"> */}
             <div className="grid grid-cols-3 content-center p-2 shadow-md">
               <RxHamburgerMenu
-                className="cursor-pointer text-lg font-semibold"
+                className="cursor-pointer text-2xl font-semibold"
                 onClick={() => {
                   setActiveSidebar((state) => !state);
                 }}
               />
-              <div className="">search bar</div>
-              <div className="">btns</div>
+              <div className=""></div>
+              <div className="flex justify-end">
+                <Button handleClick={handleLogOut}>Log Out</Button>
+              </div>
             </div>
             {/* </div> */}
             <div className="px-4 py-12 min-h-screen">
