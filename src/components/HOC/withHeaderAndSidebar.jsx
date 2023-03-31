@@ -30,7 +30,7 @@ const withHeaderAndSidebar = (Component) => {
               }`}
             >
               <div className="my-4 text-center">
-                <Link to={"/"} className="inline-block">
+                <Link to={"/dashboard"} className="inline-block">
                   <img src={reactIcon} alt="logo" />
                 </Link>
               </div>

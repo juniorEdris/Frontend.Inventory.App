@@ -152,7 +152,7 @@ export const allInventories = [
     label: "orders",
     total: 0,
     icon: <BsCartCheckFill />,
-    route: "/manage-products",
+    route: "/manage-orders",
   },
 ];
 
