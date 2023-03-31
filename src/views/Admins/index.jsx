@@ -7,10 +7,10 @@ import CallBackModal from "../../components/UI/CallBackModal";
 import { Input } from "../../components/Inputs";
 import { toast } from "react-toastify";
 import AdminDetails from "../../components/UI/AdminDetails";
-// import { getFromStorage, setToStorage } from "../../utils";
+import { getFromStorage, setToStorage } from "../../utils";
 
 const Admins = () => {
-  const [allAdmins, setAllAdmins] = useState(admins);
+  const [allAdmins, setAllAdmins] = useState(getFromStorage("admins", []));
   const [searchedAdmins, setSearchedAdmins] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [adminDetails, setAdminDetails] = useState(null);
@@ -36,28 +36,33 @@ const Admins = () => {
   };
 
   const handleAddAdmin = () => {
-    if (!!newAdmin?.name && !!newAdmin?.email) {
-      setAllAdmins((state) => [
-        { id: Math.random() + admins.length + 1, ...newAdmin, roles },
-        ...state,
-      ]);
-      // localStorage.setItem(
-      //   "admins",
-      //   JSON.stringify([
-      //     { id: Math.random() + admins.length + 1, ...newAdmin, roles },
-      //     ,
-      //     ...allAdmins,
-      //   ])
-      // );
+    if (
+      !!newAdmin?.name &&
+      !!newAdmin?.email &&
+      !!newAdmin?.email?.includes("@")
+    ) {
+      setAllAdmins((state) => {
+        const newState = [
+          { id: Math.random() + admins.length + 1, ...newAdmin, roles },
+          ...state,
+        ];
+        setToStorage("admins", newState);
+        return newState;
+      });
+
       closeAddModal();
     } else {
-      toast.error("Fill all required inputs!");
+      toast.error("Fill all required inputs and email formats!");
     }
   };
 
   const handleRemoveAdmin = (id) => {
     const restProd = allAdmins.filter((admin) => admin.id !== id);
-    setAllAdmins(restProd);
+    setAllAdmins((state) => {
+      const newState = restProd;
+      setToStorage("admins", newState);
+      return newState;
+    });
     setSearchedAdmins(restProd);
     setAdminDetails(null);
   };
@@ -87,19 +92,19 @@ const Admins = () => {
           <div className="">
             <Input
               customClasses="mb-2"
-              placeHolder="Type for a quick search"
+              placeHolder="Type admins name for a quick search"
               handleInput={handleSearch}
               value={searchInput}
             />
-            <div className="min-h-[646px] overflow-y-auto">
-              <ul className="grid gap-1">
+            <div className="h-[646px] overflow-y-auto scroll_style_thin">
+              <ul className="grid gap-1 px-3">
                 {(() => {
                   if (searchInput && searchedAdmins?.length) {
                     return searchedAdmins?.map((admin, id) => (
                       <li
                         className={`p-3 sm:p-4 hover:bg-gray-50 cursor-pointer rounded-md ${
                           admin?.id === adminDetails?.id ? "bg-gray-50" : ""
-                        } border border-primary`}
+                        } border border-primary min-h-[114px]`}
                         role="button"
                         tabIndex={0}
                         onClick={() => {
@@ -121,7 +126,7 @@ const Admins = () => {
                       <li
                         className={`p-3 sm:p-4 hover:bg-gray-50 cursor-pointer rounded-md ${
                           admin?.id === adminDetails?.id ? "bg-gray-50" : ""
-                        } border border-primary`}
+                        } border border-primary min-h-[114px]`}
                         role="button"
                         tabIndex={0}
                         onClick={() => {

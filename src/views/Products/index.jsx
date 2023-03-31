@@ -6,6 +6,7 @@ import CallBackModal from "../../components/UI/CallBackModal";
 import { products } from "../../utils/uiData";
 import ProductTable from "../../components/UI/ProductTable";
 import { toast } from "react-toastify";
+import { getFromStorage, setToStorage } from "../../utils";
 
 const Products = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -19,10 +20,12 @@ const Products = () => {
     quantity: "",
     stock: "",
     price: "",
-    desc:""
+    desc: "",
   });
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [allProducts, setAllProducts] = useState(products);
+  const [allProducts, setAllProducts] = useState(
+    getFromStorage("products", [])
+  );
   const [searchedProducts, setSearchedProducts] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
@@ -74,10 +77,14 @@ const Products = () => {
       !!product?.price &&
       !!product?.quantity
     ) {
-      setAllProducts((state) => [
-        { id: Math.random() + products.length + 1, ...product },
-        ...state,
-      ]);
+      setAllProducts((state) => {
+        const newState = [
+          { id: Math.random() + products.length + 1, ...product },
+          ...state,
+        ];
+        setToStorage("products", newState);
+        return newState;
+      });
       closeAddModal();
     } else {
       toast.error("Fill all required inputs!");
@@ -86,7 +93,11 @@ const Products = () => {
 
   const handleDelete = () => {
     const restProd = allProducts.filter((item) => item.id !== selectedProduct);
-    setAllProducts(restProd);
+    setAllProducts(() => {
+      const newState = restProd;
+      setToStorage("products", newState);
+      return restProd;
+    });
     closeDeleteModal();
   };
 
@@ -107,7 +118,11 @@ const Products = () => {
         }
         return item;
       });
-      setAllProducts(restProd);
+      setAllProducts(() => {
+        const newState = restProd;
+        setToStorage("products", newState);
+        return restProd;
+      });
       closeEditModal();
     } else {
       toast.error("Fill all required inputs!");
@@ -135,7 +150,7 @@ const Products = () => {
       <div className={`my-8`}>
         <Input
           customClasses=""
-          placeHolder="Type for a quick search"
+          placeHolder="Type products name for a quick search"
           handleInput={handleSearch}
           value={searchInput}
         />
@@ -200,7 +215,7 @@ const Products = () => {
             <Input
               customClasses=""
               placeHolder=""
-              label="name"
+              label="Product name"
               name="name"
               handleInput={handleInputs}
               value={product?.name}
@@ -209,7 +224,7 @@ const Products = () => {
             <Input
               customClasses=""
               placeHolder=""
-              label="quantity"
+              label="purchase limit"
               name="quantity"
               handleInput={handleInputs}
               value={product?.quantity}
@@ -239,7 +254,12 @@ const Products = () => {
           </div>
 
           <div>
-            <TextArea label="desc" name="desc" handleTextArea={handleInputs} value={product?.desc} />
+            <TextArea
+              label="desc"
+              name="desc"
+              handleTextArea={handleInputs}
+              value={product?.desc}
+            />
           </div>
         </div>
       </CallBackModal>
@@ -258,7 +278,7 @@ const Products = () => {
             <Input
               customClasses=""
               placeHolder=""
-              label="name"
+              label="product name"
               name="name"
               handleInput={handleInputs}
               value={product?.name}
@@ -267,7 +287,7 @@ const Products = () => {
             <Input
               customClasses=""
               placeHolder=""
-              label="quantity"
+              label="purchase limit"
               name="quantity"
               handleInput={handleInputs}
               value={product?.quantity}
@@ -338,7 +358,7 @@ const Products = () => {
             {productDetails?.name}
           </h1>
           <div className="flex items-center gap-3">
-            <span>Qty: {productDetails?.quantity ?? 0}</span>
+            <span>Purchase limit: {productDetails?.quantity ?? 0}</span>
             <span>Stock: {productDetails?.stock ?? 0}</span>
           </div>
           <p className="text-sm text-gray-500">{productDetails?.desc}</p>

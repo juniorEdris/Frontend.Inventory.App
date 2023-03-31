@@ -7,14 +7,14 @@ import { Input } from "../../components/Inputs";
 import CallBackModal from "../../components/UI/CallBackModal";
 import { toast } from "react-toastify";
 import { ImBin } from "react-icons/im";
-import { uuid } from "../../utils";
+import { getFromStorage, setToStorage, uuid } from "../../utils";
 
 const Order = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const [allOrders, setAllOrders] = useState(orders);
+  const [allOrders, setAllOrders] = useState(getFromStorage("orders", []));
   const [searchedOrders, setSearchedOrders] = useState([]);
   const [searchInput, setSearchInput] = useState(null);
   const [order, setOrder] = useState({
@@ -58,18 +58,27 @@ const Order = () => {
   };
 
   const handleAddOrder = () => {
-    if (!!order.deliverTo && !!order.email && !!order.total) {
-      setAllOrders((state) => [
-        ...state,
-        {
-          id: allOrders.length + 1,
-          idx: uuid(),
-          ...order,
-        },
-      ]);
+    if (
+      !!order.deliverTo &&
+      !!order.email &&
+      !!order.total &&
+      !!order.email.includes("@")
+    ) {
+      setAllOrders((state) => {
+        const newState = [
+          ...state,
+          {
+            id: crypto.randomUUID().toString(4),
+            idx: uuid(),
+            ...order,
+          },
+        ];
+        setToStorage("orders", newState);
+        return newState;
+      });
       closeAddModal();
     } else {
-      toast.error("Fill all required inputs!");
+      toast.error("Fill all required inputs and email formats!");
     }
   };
 
@@ -83,7 +92,11 @@ const Order = () => {
 
   const handleDelete = () => {
     const restProd = allOrders.filter((item) => item.id !== selectedOrder);
-    setAllOrders(restProd);
+    setAllOrders(() => {
+      const newState = restProd;
+      setToStorage("orders", newState);
+      return restProd;
+    });
     closeDeleteModal();
   };
 
@@ -99,7 +112,12 @@ const Order = () => {
   };
 
   const handleUpdate = () => {
-    if (!!order?.deliverTo && !!order?.email && !!order?.total) {
+    if (
+      !!order?.deliverTo &&
+      !!order?.email &&
+      !!order?.total &&
+      !!order?.email?.includes("@")
+    ) {
       const restProd = allOrders.map((item) => {
         if (item?.id === selectedOrder) {
           item.deliverTo = order?.deliverTo;
@@ -108,10 +126,14 @@ const Order = () => {
         }
         return item;
       });
-      setAllOrders(restProd);
+      setAllOrders(() => {
+        const newState = restProd;
+        setToStorage("orders", newState);
+        return restProd;
+      });
       closeEditModal();
     } else {
-      toast.error("Fill all required inputs!");
+      toast.error("Fill all required inputs and email formats!");
     }
   };
 
@@ -125,7 +147,7 @@ const Order = () => {
       <div className={`my-8`}>
         <Input
           customClasses=""
-          placeHolder="Type for a quick search"
+          placeHolder="Type invoice id for a quick search"
           handleInput={handleSearch}
           value={searchInput}
         />
@@ -186,6 +208,7 @@ const Order = () => {
         <div className="grid gap-1">
           <div className="flex items-center gap-2">
             <Input
+              type="email"
               customClasses=""
               placeHolder=""
               label="email"
@@ -225,23 +248,27 @@ const Order = () => {
                   <p className="text-lg font-medium">Price</p>
                 </div>
               </div>
-              {order?.orders.length ? order?.orders.map((order) => (
-                <div key={order?.id} className="">
-                  <div className="flex items-center justify-between border rounded-md px-2">
-                    <p className="text-lg">{order?.name}</p>
-                    <p className="text-lg">{order?.qty ?? 0}</p>
-                    <p className="text-lg">{order?.price ?? 0}</p>
-                    <span
-                      className=""
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => handleOrderDelete(order?.id)}
-                    >
-                      <ImBin className="inline-block text-lg text-red-500" />
-                    </span>
+              {order?.orders.length ? (
+                order?.orders.map((order) => (
+                  <div key={order?.id} className="">
+                    <div className="flex items-center justify-between border rounded-md px-2">
+                      <p className="text-lg">{order?.name}</p>
+                      <p className="text-lg">{order?.qty ?? 0}</p>
+                      <p className="text-lg">{order?.price ?? 0}</p>
+                      <span
+                        className=""
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleOrderDelete(order?.id)}
+                      >
+                        <ImBin className="inline-block text-lg text-red-500" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )): (<p className="text-center">No items found</p>)}
+                ))
+              ) : (
+                <p className="text-center">No items found</p>
+              )}
             </div>
           </div>
         </div>
@@ -275,6 +302,7 @@ const Order = () => {
         <div className="grid gap-1">
           <div className="flex items-center gap-2">
             <Input
+              type="email"
               customClasses=""
               placeHolder=""
               label="email"

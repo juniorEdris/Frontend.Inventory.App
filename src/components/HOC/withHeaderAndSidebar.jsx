@@ -13,6 +13,7 @@ const withHeaderAndSidebar = (Component) => {
 
     const handleLogOut = () => {
       localStorage.removeItem("accessToken");
+
       navigate("/", { replace: true });
     };
     return (

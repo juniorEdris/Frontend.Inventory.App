@@ -8,12 +8,10 @@ export function uuid() {
   return uid;
 }
 
-export const setToStorage = (name = "", data = "") => {
-  if (!data) {
-    return;
-  } else {
-    localStorage.setItem(name, JSON.stringify(data));
-  }
-};
-export const getFromStorage = (name = "",initailValue) =>
-  localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : initailValue;
+export const setToStorage = (name = "", data = "") =>
+  localStorage.setItem(name, JSON.stringify(data));
+
+export const getFromStorage = (name = "", initailValue) =>
+  localStorage.getItem(name)
+    ? JSON.parse(localStorage.getItem(name))
+    : initailValue;

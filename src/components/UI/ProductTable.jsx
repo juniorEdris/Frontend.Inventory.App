@@ -16,7 +16,7 @@ const ProductTable = ({
               Product name
             </th>
             <th scope="col" className="px-6 py-3">
-              Quantity
+              Purchase Limit
             </th>
             <th scope="col" className="px-6 py-3">
               Stock
