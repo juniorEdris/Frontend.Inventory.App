@@ -23,6 +23,7 @@ const Order = () => {
     deliverTo: "",
     email: "",
     total: "",
+    status: "",
   });
   const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -34,6 +35,7 @@ const Order = () => {
       deliverTo: "",
       email: "",
       total: "",
+      status: "",
     });
   };
 
@@ -50,6 +52,7 @@ const Order = () => {
       deliverTo: "",
       email: "",
       total: "",
+      status: "",
     });
   };
 
@@ -123,6 +126,7 @@ const Order = () => {
           item.deliverTo = order?.deliverTo;
           item.email = order?.email;
           item.total = order?.total;
+          item.status = order?.status;
         }
         return item;
       });
@@ -227,16 +231,35 @@ const Order = () => {
               required
             />
           </div>
-          <div className="max-w-xs">
-            <Input
-              customClasses=""
-              placeHolder=""
-              label="total price"
-              name="total"
-              handleInput={handleInputs}
-              value={order?.total}
-              required
-            />
+          <div className="flex items-center gap-2">
+            <div className="max-w-xs">
+              <Input
+                customClasses=""
+                placeHolder=""
+                label="total price"
+                name="total"
+                handleInput={handleInputs}
+                value={order?.total}
+                required
+              />
+            </div>
+
+            <div className="max-w-xs">
+              <div className="relative w-full py-1">
+                <label className="">Status</label>
+                <select
+                  name="status"
+                  onChange={handleInputs}
+                  className="w-full border border-stone-400 text-dark placeholder:text-gray-600 px-2 py-2 rounded focus:outline-none"
+                  value={order?.status}
+                >
+                  <option value="">---</option>
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="delivered">delivered</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div>
             <div className="max-w-xs grid gap-1 py-4">
@@ -321,16 +344,35 @@ const Order = () => {
               required
             />
           </div>
-          <div className="max-w-xs">
-            <Input
-              customClasses=""
-              placeHolder=""
-              label="total price"
-              name="total"
-              handleInput={handleInputs}
-              value={order?.total}
-              required
-            />
+          <div className="flex items-center gap-2">
+            <div className="max-w-xs">
+              <Input
+                customClasses=""
+                placeHolder=""
+                label="total price"
+                name="total"
+                handleInput={handleInputs}
+                value={order?.total}
+                required
+              />
+            </div>
+
+            <div className="max-w-xs">
+              <div className="relative w-full py-1">
+                <label className="">Status</label>
+                <select
+                  name="status"
+                  onChange={handleInputs}
+                  className="w-full border border-stone-400 text-dark placeholder:text-gray-600 px-2 py-2 rounded focus:outline-none"
+                  value={order?.status}
+                >
+                  <option value="">---</option>
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="delivered">delivered</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </CallBackModal>
