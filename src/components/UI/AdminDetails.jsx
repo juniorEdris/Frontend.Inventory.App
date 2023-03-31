@@ -10,6 +10,7 @@ const AdminDetails = ({ admin = null, handleRemove = () => {} }) => {
       </div>
       <div className="">
         <h1 className="text-xl font-medium capitalize">{admin?.name}</h1>
+        <p className="text-sm my-1">{admin?.email}</p>
         <div className="my-1">
           {admin?.roles?.map((role, id) => (
             <Chips key={id} title={role} />

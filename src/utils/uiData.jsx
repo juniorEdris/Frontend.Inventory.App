@@ -1,7 +1,7 @@
 import { AiFillDashboard } from "react-icons/ai";
-import { BsCartDashFill, BsFillBagDashFill } from "react-icons/bs";
+import { BsCartCheckFill, BsCartDashFill, BsFillBagDashFill } from "react-icons/bs";
 import { FaUserTie } from "react-icons/fa";
-import { uuid } from ".";
+import { getFromStorage, uuid } from ".";
 
 export const products = [
   {
@@ -123,29 +123,36 @@ export const pageRoutes = [
   },
 ];
 
-export const allInventories = [
-  {
-    id: 1,
-    label: "admins",
-    total: 41,
-    icon: <FaUserTie />,
-    route: "/manage-admins",
-  },
-  {
-    id: 2,
-    label: "products",
-    total: products?.length,
-    icon: <BsFillBagDashFill />,
-    route: "/manage-products",
-  },
-];
-
 export const admins = [
   {
     id: 1,
     name: "Neil Sims",
     email: "neilsims@mail.com",
     roles: ["admin", "super-admin"],
+  },
+];
+
+export const allInventories = [
+  {
+    id: 1,
+    label: "admins",
+    total: getFromStorage("admins", [])?.length ?? 0,
+    icon: <FaUserTie />,
+    route: "/manage-admins",
+  },
+  {
+    id: 2,
+    label: "products",
+    total: getFromStorage("products", [])?.length ?? 0,
+    icon: <BsFillBagDashFill />,
+    route: "/manage-products",
+  },
+  {
+    id: 3,
+    label: "orders",
+    total: 0,
+    icon: <BsCartCheckFill />,
+    route: "/manage-products",
   },
 ];
 

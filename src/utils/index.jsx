@@ -7,3 +7,11 @@ export function uuid() {
     }) || crypto.randomUUID().toString(16);
   return uid;
 }
+
+export const setToStorage = (name = "", data = "") =>
+  localStorage.setItem(name, JSON.stringify(data));
+
+export const getFromStorage = (name = "", initailValue) =>
+  localStorage.getItem(name)
+    ? JSON.parse(localStorage.getItem(name))
+    : initailValue;

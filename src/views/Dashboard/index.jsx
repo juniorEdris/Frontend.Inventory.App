@@ -4,6 +4,8 @@ import InventoryBar from "../../components/AppCharts/InventoryBar";
 import SaleSummaryGraph from "../../components/AppCharts/SaleSummaryGraph";
 import withHeaderAndSidebar from "../../components/HOC/withHeaderAndSidebar";
 import { allInventories } from "../../utils/uiData";
+import StatisticalReportGraph from "../../components/AppCharts/StatisticalReportGraph";
+import { getFromStorage } from "../../utils";
 
 const Dashboard = () => {
   return (
@@ -12,7 +14,13 @@ const Dashboard = () => {
         {allInventories.map((item, i) => (
           <ItemCountCards
             key={i}
-            count={item?.total}
+            count={
+              item?.label === "admins"
+                ? getFromStorage("admins", []).length
+                : item?.label === "products"
+                ? getFromStorage("products", []).length
+                : getFromStorage("orders", []).length
+            }
             itemName={item?.label}
             route={item?.route}
             Icon={item?.icon}
@@ -23,6 +31,10 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 gap-2">
         <InventoryBar />
         <SaleSummaryGraph />
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 mt-3">
+        <StatisticalReportGraph />
       </div>
     </div>
   );

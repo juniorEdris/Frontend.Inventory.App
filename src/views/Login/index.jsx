@@ -13,8 +13,12 @@ const Login = () => {
     e.preventDefault();
 
     if (!!email && !!password) {
-      localStorage.setItem("accessToken", `${uuid()}-${email}`);
-      navigate("/dashboard", { replace: true });
+      if (!!email?.includes("@")) {
+        localStorage.setItem("accessToken", `${uuid()}-${email}`);
+        navigate("/dashboard", { replace: true });
+      } else {
+        toast.error("Provide valid email!");
+      }
     } else {
       toast.error("Provide proper credentials!");
     }
