@@ -7,6 +7,7 @@ import CallBackModal from "../../components/UI/CallBackModal";
 import { Input } from "../../components/Inputs";
 import { toast } from "react-toastify";
 import AdminDetails from "../../components/UI/AdminDetails";
+// import { getFromStorage, setToStorage } from "../../utils";
 
 const Admins = () => {
   const [allAdmins, setAllAdmins] = useState(admins);
@@ -40,6 +41,14 @@ const Admins = () => {
         { id: Math.random() + admins.length + 1, ...newAdmin, roles },
         ...state,
       ]);
+      // localStorage.setItem(
+      //   "admins",
+      //   JSON.stringify([
+      //     { id: Math.random() + admins.length + 1, ...newAdmin, roles },
+      //     ,
+      //     ...allAdmins,
+      //   ])
+      // );
       closeAddModal();
     } else {
       toast.error("Fill all required inputs!");

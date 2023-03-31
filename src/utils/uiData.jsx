@@ -123,11 +123,20 @@ export const pageRoutes = [
   },
 ];
 
+export const admins = [
+  {
+    id: 1,
+    name: "Neil Sims",
+    email: "neilsims@mail.com",
+    roles: ["admin", "super-admin"],
+  },
+];
+
 export const allInventories = [
   {
     id: 1,
     label: "admins",
-    total: 41,
+    total: admins.length,
     icon: <FaUserTie />,
     route: "/manage-admins",
   },
@@ -140,14 +149,7 @@ export const allInventories = [
   },
 ];
 
-export const admins = [
-  {
-    id: 1,
-    name: "Neil Sims",
-    email: "neilsims@mail.com",
-    roles: ["admin", "super-admin"],
-  },
-];
+
 
 export const orders = [
   {
