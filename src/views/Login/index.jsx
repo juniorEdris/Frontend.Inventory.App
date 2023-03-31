@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Input } from "../../components/Inputs";
 import { useNavigate } from "react-router-dom";
+import { uuid } from "../../utils";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,7 +11,13 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate("/dashboard", { replace: true });
+
+    if (!!email && !!password) {
+      localStorage.setItem("accessToken", `${uuid()}-${email}`);
+      navigate("/dashboard", { replace: true });
+    } else {
+      toast.error("Provide proper credentials!");
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
